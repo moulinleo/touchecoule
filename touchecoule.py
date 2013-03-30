@@ -327,19 +327,27 @@ def demande_orientation(orientation,tableau_joueur,navire, x, y):
 		if orientation == 0:
 			bonne_orientation=True
 			for m in range(navire[2]):
-				if tableau_joueur[x+m][y][0] == "":
+				if not tableau_joueur[x+m][y][0] == "":
+					bonne_orientation = False
+			if not bonne_orientation:
+				print("Ces cases ne sont pas libres. Recommencez")
+
+			else :
+				for m in range(navire[2]):
 					tableau_joueur[x+m][y][0] = navire[0]
-				else :
-					print("Ces cases ne sont pas libres. Recommencez")
+
 		elif orientation == 1:
 			bonne_orientation=True
 			for m in range(navire[2]):
-				print(x, y, m)
-				if tableau_joueur[x][y-m][0] == "":
-					tableau_joueur[x][y-m][0]=navire[0]
-				else :
-					print("Ces cases ne sont pas libres. Recommencez")
+				if not tableau_joueur[x][y-m][0] == "":
+					bonne_orientation = False
+			if not bonne_orientation:
+				print("Ces cases ne sont pas libres. Recommencez")
 							
+			else :
+				for m in range(navire[2]):
+					tableau_joueur[x][y-m][0]=navire[0]
+
 		else :
 			print("Cette orientation n'existe pas. Recommencez")
 			bonne_orientation=False
