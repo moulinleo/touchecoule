@@ -138,7 +138,7 @@ def demande_case_et_msgerreur(navire):
 	bonne_entree = False
 	while not bonne_entree:
 		bonne_entree = False
-		case=str(input("A quelle case voulez-vous placer votre"+navire+"? : (ex:H6)"))
+		case=str(input("A quelle case voulez-vous placer votre "+navire+"? : (ex:H6) ")).lower()
 		if len(case) == 2:
 			if 'a' <= case[0] <= 'j':
 				if '1' <= case[1] <= '9':
@@ -149,7 +149,7 @@ def demande_case_et_msgerreur(navire):
 				print("Il faut une lettre en première position entre a et j.")
 		elif len(case)==3:
 			if 'a' <= case[0] <= 'j':
-				if case[1:2] == '10':
+				if case[1:] == '10':
 					bonne_entree = True
 				else:
 					print("Le deuxiemme nombre doit etre un chiffre entre 1 et 10.")
@@ -160,6 +160,7 @@ def demande_case_et_msgerreur(navire):
 				
 
 	return case
+print(demande_case_et_msgerreur('cuirasse'))
 	
 def determine_orientation_joueur(x,y,navires):
 	if x > len(tableau_joueur)-navire[i][p] and y > len(tableau_joueur)-navire[i][p]:
