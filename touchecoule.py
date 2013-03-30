@@ -173,15 +173,6 @@ def determine_orientation_joueur(x,y,navire):
 		orientation = "choix"
 	return orientation
 
-navire = ['porte-avions', 1, 5]
-case = demande_case_et_msgerreur(navire)
-print(case)
-x = dico[case[0]]
-y = int(case[1:])
-print(x,y)
-orientation = determine_orientation_joueur(x, y, navire)
-print(orientation)
-
 def placement_navires_joueur(tableau_joueur, navires):
 	for i in range(len(navires)):
 		for j in range(navires[i][1]):
