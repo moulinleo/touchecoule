@@ -474,14 +474,14 @@ def determine_orientation_joueur(x,y,navire, length):
 		
 	"""	
 
-	if x > length-navire[2] and y < length-navire[2]:
+	if x > length-navire[2] and y < navire[2]:
 		orientation = -1
 	elif y < navire[2]:
-		orientation = "droite"
+		orientation = 0 #remplace droite par 0
 	elif x > length-navire[2]:
-		orientation = "haut"
+		orientation = 1 #remplace haut par 1
 	else:
-		orientation = "choix"
+		orientation = None # Choix
 	return orientation
 
 
@@ -500,36 +500,23 @@ def placement_navires_joueur(tableau_joueur, navires):
 	for navire in navires:
 		for j in range(navire[1]):
 			bonneplace = False
+			art_ascii(tableau_joueur)
 			while not bonneplace:
 				bonneplace = True
 				case = demande_case_et_msgerreur(navire)
 				x = dico[case[0]]
 				y = int(case[1:])-1
-				
-				if not(0 <= x < length-navire[2]) and not(0 <= y < length-navire[2]):
-					print("Choisissez une autre case")
-					bonneplace = False
-				else:
-					orientation = determine_orientation_joueur(x,y,navire, length)
-					bonne_orientation = False
-					while bonne_orientation == False:
-						if orientation == 'choix':
-							tableau_joueur, bonne_orientation = demande_orientation(orientation,tableau_joueur,navire, x, y)
-						elif orientation == "droite":
-							bonne_orientation=True
-							for m in range(navire[2]):
-								if tableau_joueur[x+m][y][0] == "":
-									tableau_joueur[x+m][y][0]=navire[0]
-							
-						elif orientation == "haut":
-							bonne_orientation=True
-							for m in range(navire[2]):
-								if tableau_joueur[x][y+m][0] == "":
-									tableau_joueur[x][y+m][0]=navire[0]
-						else:
-							bonneplace = False
-							bonne_orientation = True
-							print("Choisissez une autre case")
+				orientation = determine_orientation_joueur(x,y,navire, length)
+				bonne_orientation = False
+				while bonne_orientation == False:
+					bonne_orientation = True
+					
+					tableau_joueur, bonne_orientation = demande_orientation(orientation,tableau_joueur,navire, x, y)
+
+					if not bonne_orientation:
+						print("Choisissez une autre case")
+						bonne_orientation = True	
+						bonneplace = False
 					 
 	return tableau_joueur
 	
@@ -543,29 +530,39 @@ def demande_orientation(orientation,tableau_joueur,navire, x, y):
 	Exemple:
 		
 	"""	
-	if orientation == "choix":
+	if orientation is None:
 		orientation=int(input("Choisissez l'orientation de votre "+navire[0]+": 1 pour haut, 0 pour droite "))
-		if orientation == 0:
-			bonne_orientation=True
-			for m in range(navire[2]):
-				if tableau_joueur[x+m][y][0] == "":
-					tableau_joueur[x+m][y][0] = navire[0]
-				else :
-					print("Ces cases ne sont pas libres. Recommencez")
-		elif orientation == 1:
-			bonne_orientation=True
-			for m in range(navire[2]):
-				print(x, y, m)
-				if tableau_joueur[x][y-m][0] == "":
-					tableau_joueur[x][y-m][0]=navire[0]
-				else :
-					print("Ces cases ne sont pas libres. Recommencez")
-							
-		else :
-			print("Cette orientation n'existe pas. Recommencez")
-			bonne_orientation=False
+	if orientation == 0:
+		bonne_orientation=True
+		for m in range(navire[2]):
+			if not tableau_joueur[x+m][y][0] == "":
+				bonne_orientation = False
+		if not bonne_orientation:
+			print("Ces cases ne sont pas libres. Recommencez")
 
-		return tableau_joueur, bonne_orientation
+		else :
+			for m in range(navire[2]):
+				tableau_joueur[x+m][y][0] = navire[0]
+
+	elif orientation == 1:
+		bonne_orientation=True
+		for m in range(navire[2]):
+			if not tableau_joueur[x][y-m][0] == "":
+				bonne_orientation = False
+		if not bonne_orientation:
+			print("Ces cases ne sont pas libres. Recommencez")
+						
+		else :
+			for m in range(navire[2]):
+				tableau_joueur[x][y-m][0]=navire[0]
+	elif orientation == -1:
+		print("Impossible de mettre le bateau à cet endroit.")
+		bonne_orientation=False
+	else :
+		print("Cette orientation n'existe pas. Recommencez")
+		bonne_orientation=False
+
+	return tableau_joueur, bonne_orientation
 #--------------------------------------placement navire IA         OK
 
 def determine_orientation(tableau_IA, navire, x, y):
