@@ -5,8 +5,9 @@ from tkinter import *
 
 #----------------------------------------entrees joueur
 
+dico = {"a":0,"b":1,"c":2,"d":3,"e":4,"f":5,"g":6,"h":7,"i":8,"j":9}
+tableau_joueur = [[None for i in range(10)] for j in range(10)]
 def transforme_joueur_ordi(tir):                                        #J5 => [9, 4]
-	dico = {"a":0,"b":1,"c":2,"d":3,"e":4,"f":5,"g":6,"h":7,"i":8,"j":9}
 	case = [dico[str.lower(tir[0])]]
 	y=""
 	for i in range(len(tir)-1):
@@ -138,7 +139,7 @@ def demande_case_et_msgerreur(navire):
 	bonne_entree = False
 	while not bonne_entree:
 		bonne_entree = False
-		case=str(input("A quelle case voulez-vous placer votre "+navire+"? : (ex:H6) ")).lower()
+		case=str(input("A quelle case voulez-vous placer votre "+navire[0]+"? : (ex:H6) ")).lower()
 		if len(case) == 2:
 			if 'a' <= case[0] <= 'j':
 				if '1' <= case[1] <= '9':
@@ -160,18 +161,26 @@ def demande_case_et_msgerreur(navire):
 				
 
 	return case
-print(demande_case_et_msgerreur('cuirasse'))
 	
-def determine_orientation_joueur(x,y,navires):
-	if x > len(tableau_joueur)-navire[i][p] and y > len(tableau_joueur)-navire[i][p]:
+def determine_orientation_joueur(x,y,navire):
+	if x > len(tableau_joueur)-navire[2] and y < len(tableau_joueur)-navire[2]:
 		orientation = -1
-	elif y > len(tableau_joueur)-navire[i][p]:
+	elif y < navire[2]:
 		orientation = "droite"
-	elif x > len(tableau_joueur)-navire[i][p]:
+	elif x > len(tableau_joueur)-navire[2]:
 		orientation = "haut"
 	else:
 		orientation = "choix"
 	return orientation
+
+navire = ['porte-avions', 1, 5]
+case = demande_case_et_msgerreur(navire)
+print(case)
+x = dico[case[0]]
+y = int(case[1:])
+print(x,y)
+orientation = determine_orientation_joueur(x, y, navire)
+print(orientation)
 
 def placement_navires_joueur(tableau_joueur, navires):
 	for i in range(len(navires)):
