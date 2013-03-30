@@ -248,6 +248,7 @@ def determine_orientation(tableau_IA, navire, x, y):
 	else:
 		orientation = randint(0,1)
 	return orientation
+
 	
 def verif_si_peut_placer(tableau_IA, longueur_navire, orientation, x, y):
 	verif = True
