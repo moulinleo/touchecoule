@@ -36,13 +36,38 @@ def verif_si_entree_possible(entree):
 	return result
 	
 #----------------------------------------lit fichier navires.dat
-def lit_fichier():                    #['porte-avions 1 5\n', 'cuirasse 1 4\n', 'sous-marin 1 3\n', 'destroyer 1 2 \n']
+def lit_fichier():     
+	"""	
+	Lit le fichier "navires.dat" et le convertit en une liste du type 
+	['porte-avions 1 5\n', 'cuirasse 1 4\n', 'sous-marin 1 3\n', 'destroyer 1 2 \n']
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		contenu(list): liste contenant le nom, le nombre et la taille des différents navires
+	"""                           
 	fichier = open("navires.dat", "r")
 	contenu = fichier.readlines()
 	fichier.close()
 	return contenu
 	
-def liste_fichier():                  #[['porte-avions', 1, 5], ['cuirasse', 1, 4], ['sous-marin', 1, 3], ['destroyer', 1, 2]]
+def liste_fichier(): 
+	"""
+	Réarrange la liste renvoyée par la fonction lit_fichier() en une liste de listes du type
+	[['porte-avions', 1, 5], ['cuirasse', 1, 4], ['sous-marin', 1, 3], ['destroyer', 1, 2]], 
+	la rendant plus facile à manipuler par la suite.
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		contenu(list): liste de listes contenant le nom, le nombre et la taille des différents navires
+		
+	Exemple:
+		print(liste_fichier())
+		>>> [['porte-avions', 1, 5], ['cuirasse', 1, 4], ['sous-marin', 1, 3], ['destroyer', 1, 2]]
+	"""   
 	contenu = lit_fichier() 
 	    
 	for i in range(len(contenu)):
@@ -71,10 +96,16 @@ def liste_fichier():                  #[['porte-avions', 1, 5], ['cuirasse', 1, 
 #--------------------------------------tir joueur
 
 def verif_tir_joueur(tir, tableau_IA):
+	"""
+	
+	"""
 	if tir[0]<0:
 		a=0
 
 def tir_joueur(tableau_IA, navires, tirs_precedent):
+	"""
+	"""
+	
 	tir_possible = False
 	
 	while not(tir_possible):
@@ -87,12 +118,31 @@ def tir_joueur(tableau_IA, navires, tirs_precedent):
 #--------------------------------------tir IA
 
 def cree_liste_100_cases():
+	"""
+	Crée une liste contenant les 100 premiers nombres.
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		l(list): liste contenant les nombres de 0 à 99
+	"""
 	l = []
 	for i in range(100):
 		l.append(i)
 	return l
 	
 def tir_aleatoire(tableau_joueur, liste_tir):
+	"""
+	Fait tirer aléatoirement l'IA sur une case de coordonnées x, y , 
+	et modifie la variable "tableau_joueur" en fonction du tir (touché ou coulé)
+	
+	Arguments:
+		tableau_joueur(list): liste de listes contenant
+		
+	Valeurs de retour:
+		tir_valide(bool): True si le tir est valide, False si non.
+	"""    
 	case = liste_tir.pop(0)
 	x = case // 10
 	y = case % 10
@@ -105,7 +155,10 @@ def tir_aleatoire(tableau_joueur, liste_tir):
 	print(x,y)
 	return tir_valide
 	
-def tir_IA(tableau_joueur, tir_precedent):    
+def tir_IA(tableau_joueur, tir_precedent):
+	"""
+	
+	"""    
 	liste_tir = cree_liste_100_cases()
 	shuffle(liste_tir)
 	tir_valide = False
@@ -122,6 +175,18 @@ def tir_IA(tableau_joueur, tir_precedent):
 #----------------------------------------phase de tir
 
 def phase_de_tir(navires,tableau_IA,tableau_joueur):
+	"""
+	Phase de tir principale, faisant tirer à tour de rôle l'IA et le joueur,
+	si la partie n'est pas encore finie.
+	
+	Arguments:
+		navires(list): liste de listes contenant toutes les informations sur les navires : du type [["navire1",nombre,taille],["navires2",nombre,taille]...]
+		tableau_IA(list): liste de listes de type : [[["",False],["",False]..],[["",False]..]...], représente la grille de l'IA
+		tableau_joueur(list): liste de listes de type : [[["",False],["",False]..],[["",False]..]...], représente la grille du joueur
+		
+	Valeurs de retour:
+		Aucune
+	"""
 	fin_partie = False
 	tirs_precedent_joueur = []
 	tir_precedent_IA = [-1,0,0]   #[orientation, x, y] si veux tir aléatoire orientation = -1
@@ -135,6 +200,18 @@ def phase_de_tir(navires,tableau_IA,tableau_joueur):
 #--------------------------------------placement navire joueur (doit etre polyvalent si multijoueur)
 
 def demande_case_et_msgerreur(navire):
+	"""
+	Demande au joueur la case où il veut placer son navire, et vérifie si cette case existe.
+	
+	Arguments:
+		navires(list): liste de listes du type : [["navire1",nombre,taille],["navires2",nombre,taille]...]
+		
+	Valeurs de retour:
+		case(int): nombre dont le premier chiffre contient la coordonnées en x et le deuxième la coordonnée en y
+		
+	Exemple:
+		
+	"""
 	bonne_entree = False
 	while not bonne_entree:
 		bonne_entree = False
@@ -162,6 +239,17 @@ def demande_case_et_msgerreur(navire):
 	return case
 	
 def determine_orientation_joueur(x,y,navire, length):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	if x > length-navire[2] and y < length-navire[2]:
 		orientation = -1
 	elif y < navire[2]:
@@ -174,6 +262,17 @@ def determine_orientation_joueur(x,y,navire, length):
 
 
 def placement_navires_joueur(tableau_joueur, navires):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	length = len(tableau_joueur)
 	for navire in navires:
 		for j in range(navire[1]):
@@ -212,6 +311,17 @@ def placement_navires_joueur(tableau_joueur, navires):
 	return tableau_joueur
 	
 def demande_orientation(orientation,tableau_joueur,navire, x, y):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	if orientation == "choix":
 		orientation=int(input("Choisissez l'orientation de votre "+navire[0]+": 1 pour haut, 0 pour droite "))
 		if orientation == 0:
@@ -239,6 +349,17 @@ def demande_orientation(orientation,tableau_joueur,navire, x, y):
 #--------------------------------------placement navire IA
 
 def determine_orientation(tableau_IA, navire, x, y):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	if x > len(tableau_IA)-navire[2] and y > len(tableau_IA)-navire[2]:
 		orientation = -1
 	elif y > len(tableau_IA)-navire[2]:
@@ -250,6 +371,17 @@ def determine_orientation(tableau_IA, navire, x, y):
 	return orientation
 	
 def verif_si_peut_placer(tableau_IA, longueur_navire, orientation, x, y):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	verif = True
 	
 	for i in range(longueur_navire):
@@ -265,6 +397,17 @@ def verif_si_peut_placer(tableau_IA, longueur_navire, orientation, x, y):
 	return verif
 	
 def place_navire(tableau_IA, navire, orientation, x, y):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	for i in range(navire[2]):
 		if orientation == 0:
 			tableau_IA[x+i][y][0] = navire[0]
@@ -272,6 +415,17 @@ def place_navire(tableau_IA, navire, orientation, x, y):
 			tableau_IA[x][y+i][0] = navire[0]
 			
 def placement_navires_IA(tableau_IA, navires):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	for i in range(len(navires)):
 		for j in range(navires[i][1]):
 			bien_place = False
@@ -294,7 +448,19 @@ def placement_navires_IA(tableau_IA, navires):
 
 
 #---------------------------------------partie principale
-def cree_tableau():       #crée un tableau vide 10*10 contenant des ["",False]
+def cree_tableau():
+	"""
+	Crée un tableau vide (10x10) contenant des ["",False]
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""     
 	tableau = []
 	for i in range(10):
 		tableau.append([])
@@ -303,6 +469,17 @@ def cree_tableau():       #crée un tableau vide 10*10 contenant des ["",False]
 	return tableau
 
 def lance_jeu(navires):
+	"""
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		
+		
+	Exemple:
+		
+	"""
 	tableau_IA = cree_tableau()                                              #création des tableaux OK
 	tableau_joueur = cree_tableau()                                          # OK
 	
@@ -315,6 +492,15 @@ def lance_jeu(navires):
 	
 
 def touche_coule():
+	"""
+	Fonction principale, qui relance la fonction lance_jeu si le joueur désire rejouer.
+	
+	Arguments:
+		Aucun
+		
+	Valeurs de retour:
+		Aucune
+	"""
 	rejouer = "o"
 	
 	while rejouer == "o":
