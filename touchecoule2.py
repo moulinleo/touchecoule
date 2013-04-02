@@ -44,11 +44,14 @@ def transforme_ordi_joueur(case):
 	
 def verif_si_entree_possible(entree, tableau):
 	"""
+	Vérifie si le tir entré par le joueur est valide.
 	
 	Arguments:
-		
+		entree(list): 
+		tableau(list): 
+		 
 	Valeurs de retour:
-		
+		result(bool): True si le tir est valide, False si non
 	Exemple:
 		
 	"""	
@@ -429,13 +432,15 @@ def phase_de_tir(navires,tableau_IA,tableau_joueur):
 
 def demande_case_et_msgerreur(navire):
 	"""
+	Demande où le joueur veut placer son navire, et affiche un message 
+	d'erreur si cette case n'est pas valide.
 	
 	Arguments:
+		navire: liste contenant les informations sur un navire
+		ex : ['sous-marin', 1, 3]
 		
 	Valeurs de retour:
-		
-	Exemple:
-		
+		case(str): coordonnées de la case choisie en string, ex: e5
 	"""	
 	bonne_entree = False
 	while not bonne_entree:
@@ -463,38 +468,45 @@ def demande_case_et_msgerreur(navire):
 
 	return case
 	
-def determine_orientation_joueur(x,y,navire, length):
+def determine_orientation_joueur(x,y,navire,length):
 	"""
+	Détermine l'orientation du navire s'il n'y en a qu'une possible, ou 
+	renvoit orientation = None si l'orientation doit être définie par le joueur.
 	
 	Arguments:
+		x(int): coordonnée en x 
+		y(int): coordonnée en y 
+		navire(list): informations sur le navire, ex : ['sous-marin', 1, 3]
+		length(int): longueur de la liste "tableau_joueur"
 		
-	Valeurs de retour:
-		
-	Exemple:
-		
-	"""	
+	Valeurs de retour: 
+		orientation(int/str): orientation prédéterminée
+	"""
 
 	if x > length-navire[2] and y < navire[2]:
 		orientation = -1
 	elif y < navire[2]:
-		orientation = 0 #remplace droite par 0
+		orientation = 0 
 	elif x > length-navire[2]:
-		orientation = 1 #remplace haut par 1
+		orientation = 1
 	else:
-		orientation = None # Choix
+		orientation = None 
 	return orientation
 
 
 def placement_navires_joueur(tableau_joueur, navires):
 	"""
+	Fonction principale du placement des navires du joueur, demande, 
+	pour chaque navire, où le joueur souhaite le placer, et modifie 
+	la variable "tableau_joueur" en conséquence.
 	
 	Arguments:
+		tableau_joueur(list): liste de listes faisant office de grille
+		navires(list): liste de listes contenant les informations sur les navires
 		
 	Valeurs de retour:
-		
-	Exemple:
-		
-	"""	
+		tableau_joueur(list): tableau complété par les bateaux du joueur
+	"""
 	dico = {"a":0,"b":1,"c":2,"d":3,"e":4,"f":5,"g":6,"h":7,"i":8,"j":9}
 	length = len(tableau_joueur)
 	for navire in navires:
@@ -522,14 +534,21 @@ def placement_navires_joueur(tableau_joueur, navires):
 	
 def demande_orientation(orientation,tableau_joueur,navire, x, y):
 	"""
+	En fonction de la valeur de "orientation", demande au joueur l'orientation 
+	de son navire, ou défini directement l'orientation adéquate.
+	Affiche un message d'erreur si les cases ne sont pas libres.
 	
 	Arguments:
+		orientation(int/str): None si pas encore définie, 0 si droite, 1 si haut
+		tableau_joueur(list): liste de listes représentant la grille du joueur
+		navire(list): liste contenant les informations sur un navire
+		x(int): coordonnée en x 
+		y(int): coordonnée en y
 		
 	Valeurs de retour:
-		
-	Exemple:
-		
-	"""	
+		tableau_joueur(list): liste de listes modifiée représentant la grille du joueur
+		bonne_orientation(bool): True si l'orientation est valide, False si non
+	"""
 	if orientation is None:
 		orientation=int(input("Choisissez l'orientation de votre "+navire[0]+": 1 pour haut, 0 pour droite "))
 	if orientation == 0:
